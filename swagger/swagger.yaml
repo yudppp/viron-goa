@@ -1,0 +1,615 @@
+consumes:
+- application/json
+definitions:
+  Query:
+    description: viron query (default view)
+    example:
+      key: Id autem ratione dolor.
+      type: Aut et deserunt voluptates.
+    properties:
+      key:
+        description: key
+        example: Id autem ratione dolor.
+        type: string
+      type:
+        description: type
+        example: Aut et deserunt voluptates.
+        type: string
+    required:
+    - key
+    - type
+    title: 'Mediatype identifier: application/vnd.query+json; view=default'
+    type: object
+  SigninPayload:
+    example:
+      email: identify key
+      password: zil3mqvnk2
+    properties:
+      email:
+        description: ID or Email
+        example: identify key
+        type: string
+      password:
+        description: Password
+        example: zil3mqvnk2
+        maxLength: 256
+        type: string
+    required:
+    - email
+    - password
+    title: SigninPayload
+    type: object
+  Vironapi:
+    description: viron api (default view)
+    example:
+      method: Est corrupti voluptatem.
+      path: Autem perferendis quia provident.
+    properties:
+      method:
+        description: name
+        example: Est corrupti voluptatem.
+        type: string
+      path:
+        description: path
+        example: Autem perferendis quia provident.
+        type: string
+    required:
+    - method
+    - path
+    title: 'Mediatype identifier: application/vnd.vironapi+json; view=default'
+    type: object
+  Vironauthtype:
+    description: viron authtype media (default view)
+    example:
+      method: POST
+      provider: ""
+      type: signin
+      url: /signin
+    properties:
+      method:
+        description: method
+        example: POST
+        type: string
+      provider:
+        description: auth provider
+        example: ""
+        type: string
+      type:
+        description: auth type
+        example: signin
+        type: string
+      url:
+        description: url
+        example: /signin
+        type: string
+    required:
+    - type
+    - provider
+    - url
+    - method
+    title: 'Mediatype identifier: application/vnd.vironauthtype+json; view=default'
+    type: object
+  VironauthtypeCollection:
+    description: VironauthtypeCollection is the media type for an array of Vironauthtype
+      (default view)
+    example:
+    - method: POST
+      provider: ""
+      type: signin
+      url: /signin
+    - method: POST
+      provider: ""
+      type: signin
+      url: /signin
+    items:
+      $ref: '#/definitions/Vironauthtype'
+    title: 'Mediatype identifier: application/vnd.vironauthtype+json; type=collection;
+      view=default'
+    type: array
+  Vironcomponent:
+    description: viron component (default view)
+    example:
+      api:
+        method: Est corrupti voluptatem.
+        path: Autem perferendis quia provident.
+      name: Esse nemo omnis qui quis odio.
+      pagination: true
+      primary: Vero a accusamus ad et.
+      query:
+      - key: Id autem ratione dolor.
+        type: Aut et deserunt voluptates.
+      - key: Id autem ratione dolor.
+        type: Aut et deserunt voluptates.
+      - key: Id autem ratione dolor.
+        type: Aut et deserunt voluptates.
+      style: Nesciunt provident aut deleniti.
+      table_labels:
+      - Voluptates qui.
+    properties:
+      api:
+        $ref: '#/definitions/Vironapi'
+      name:
+        description: name
+        example: Esse nemo omnis qui quis odio.
+        type: string
+      pagination:
+        description: pagination
+        example: true
+        type: boolean
+      primary:
+        description: primary key
+        example: Vero a accusamus ad et.
+        type: string
+      query:
+        description: query
+        example:
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        items:
+          $ref: '#/definitions/Query'
+        type: array
+      style:
+        description: style
+        example: Nesciunt provident aut deleniti.
+        type: string
+      table_labels:
+        description: table label
+        example:
+        - Voluptates qui.
+        items:
+          example: Voluptates qui.
+          type: string
+        type: array
+    required:
+    - name
+    - style
+    - api
+    title: 'Mediatype identifier: application/vnd.vironcomponent+json; view=default'
+    type: object
+  Vironpage:
+    description: viron page (default view)
+    example:
+      components:
+      - api:
+          method: Est corrupti voluptatem.
+          path: Autem perferendis quia provident.
+        name: Esse nemo omnis qui quis odio.
+        pagination: true
+        primary: Vero a accusamus ad et.
+        query:
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        style: Nesciunt provident aut deleniti.
+        table_labels:
+        - Voluptates qui.
+      - api:
+          method: Est corrupti voluptatem.
+          path: Autem perferendis quia provident.
+        name: Esse nemo omnis qui quis odio.
+        pagination: true
+        primary: Vero a accusamus ad et.
+        query:
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        style: Nesciunt provident aut deleniti.
+        table_labels:
+        - Voluptates qui.
+      - api:
+          method: Est corrupti voluptatem.
+          path: Autem perferendis quia provident.
+        name: Esse nemo omnis qui quis odio.
+        pagination: true
+        primary: Vero a accusamus ad et.
+        query:
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        - key: Id autem ratione dolor.
+          type: Aut et deserunt voluptates.
+        style: Nesciunt provident aut deleniti.
+        table_labels:
+        - Voluptates qui.
+      group: At molestias necessitatibus quasi.
+      id: Iusto rerum similique provident.
+      name: Vitae dolorem.
+      section: Rerum sint molestiae.
+    properties:
+      components:
+        description: pages
+        example:
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        items:
+          $ref: '#/definitions/Vironcomponent'
+        type: array
+      group:
+        description: group
+        example: At molestias necessitatibus quasi.
+        type: string
+      id:
+        description: id
+        example: Iusto rerum similique provident.
+        type: string
+      name:
+        description: name
+        example: Vitae dolorem.
+        type: string
+      section:
+        description: section
+        example: Rerum sint molestiae.
+        type: string
+    required:
+    - id
+    - name
+    - section
+    - group
+    - components
+    title: 'Mediatype identifier: application/vnd.vironpage+json; view=default'
+    type: object
+  Vironsetting:
+    description: viron setting (default view)
+    example:
+      color: Ut quibusdam delectus.
+      name: Expedita hic eum magni placeat pariatur.
+      pages:
+      - components:
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        - api:
+            method: Est corrupti voluptatem.
+            path: Autem perferendis quia provident.
+          name: Esse nemo omnis qui quis odio.
+          pagination: true
+          primary: Vero a accusamus ad et.
+          query:
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          - key: Id autem ratione dolor.
+            type: Aut et deserunt voluptates.
+          style: Nesciunt provident aut deleniti.
+          table_labels:
+          - Voluptates qui.
+        group: At molestias necessitatibus quasi.
+        id: Iusto rerum similique provident.
+        name: Vitae dolorem.
+        section: Rerum sint molestiae.
+      tags:
+      - Quo omnis ut quia consequuntur qui.
+      - Quo omnis ut quia consequuntur qui.
+      theme: A consequatur distinctio possimus in dolor repellendus.
+      thumbnail: Quos quia.
+    properties:
+      color:
+        description: color
+        example: Ut quibusdam delectus.
+        type: string
+      name:
+        description: name
+        example: Expedita hic eum magni placeat pariatur.
+        type: string
+      pages:
+        description: pages
+        example:
+        - components:
+          - api:
+              method: Est corrupti voluptatem.
+              path: Autem perferendis quia provident.
+            name: Esse nemo omnis qui quis odio.
+            pagination: true
+            primary: Vero a accusamus ad et.
+            query:
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            style: Nesciunt provident aut deleniti.
+            table_labels:
+            - Voluptates qui.
+          - api:
+              method: Est corrupti voluptatem.
+              path: Autem perferendis quia provident.
+            name: Esse nemo omnis qui quis odio.
+            pagination: true
+            primary: Vero a accusamus ad et.
+            query:
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            style: Nesciunt provident aut deleniti.
+            table_labels:
+            - Voluptates qui.
+          - api:
+              method: Est corrupti voluptatem.
+              path: Autem perferendis quia provident.
+            name: Esse nemo omnis qui quis odio.
+            pagination: true
+            primary: Vero a accusamus ad et.
+            query:
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            - key: Id autem ratione dolor.
+              type: Aut et deserunt voluptates.
+            style: Nesciunt provident aut deleniti.
+            table_labels:
+            - Voluptates qui.
+          group: At molestias necessitatibus quasi.
+          id: Iusto rerum similique provident.
+          name: Vitae dolorem.
+          section: Rerum sint molestiae.
+        items:
+          $ref: '#/definitions/Vironpage'
+        type: array
+      tags:
+        description: tags
+        example:
+        - Quo omnis ut quia consequuntur qui.
+        - Quo omnis ut quia consequuntur qui.
+        items:
+          example: Quo omnis ut quia consequuntur qui.
+          type: string
+        type: array
+      theme:
+        description: theme
+        example: A consequatur distinctio possimus in dolor repellendus.
+        type: string
+      thumbnail:
+        description: thumbnail
+        example: Quos quia.
+        type: string
+    required:
+    - name
+    - color
+    - theme
+    - pages
+    - tags
+    - thumbnail
+    title: 'Mediatype identifier: application/vnd.vironsetting+json; view=default'
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+info:
+  description: viron goa service
+  title: viron goa
+  version: ""
+paths:
+  /{filepath}:
+    get:
+      externalDocs:
+        description: viron client
+        url: ""
+      operationId: client#/*filepath
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filepath
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      summary: Download viron-client/v1
+  /signin:
+    post:
+      description: Creates a valid JWT
+      operationId: jwt#signin
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/SigninPayload'
+      responses:
+        "204":
+          description: No Content
+          headers:
+            Authorization:
+              description: Generated JWT
+              type: string
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: signin jwt
+      tags:
+      - jwt
+  /swagger.json:
+    get:
+      externalDocs:
+        description: Swagger JSON
+        url: ""
+      operationId: swagger#/swagger.json
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+      security:
+      - jwt: []
+      summary: Download swagger/swagger.json
+  /viron:
+    get:
+      description: Get viron menu
+      operationId: viron#get
+      produces:
+      - application/vnd.vironsetting+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Vironsetting'
+      security:
+      - jwt: []
+      summary: get viron
+      tags:
+      - viron
+  /viron_authtype:
+    get:
+      description: Get viron authtype
+      operationId: viron#authtype
+      produces:
+      - application/vnd.vironauthtype+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/VironauthtypeCollection'
+      summary: authtype viron
+      tags:
+      - viron
+produces:
+- application/json
+responses:
+  InternalServerError:
+    description: Internal Server Error
+  Unauthorized:
+    description: Unauthorized
+securityDefinitions:
+  jwt:
+    description: |2-
+
+
+      **Security Scopes**:
+        * `api:access`: API access
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
