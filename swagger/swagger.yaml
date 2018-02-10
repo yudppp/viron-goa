@@ -555,12 +555,15 @@ paths:
       description: Get post list
       operationId: post#list
       parameters:
-      - description: limit
+      - default: 5
+        description: limit
         in: query
+        maximum: 100
         name: limit
         required: false
         type: integer
-      - description: offset
+      - default: 0
+        description: offset
         in: query
         name: offset
         required: false

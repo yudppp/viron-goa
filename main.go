@@ -20,14 +20,13 @@ func main() {
 	app.UseJWTMiddleware(service, NewJWTMiddleware())
 
 	// Mount "client" controller
-	c := NewClientController(service)
-	app.MountClientController(service, c)
+	app.MountClientController(service, NewClientController(service))
 	// Mount "swagger" controller
-	c3 := NewSwaggerController(service)
-	app.MountSwaggerController(service, c3)
+	app.MountSwaggerController(service, NewSwaggerController(service))
 	// Mount "viron" controller
-	c4 := NewVironController(service)
-	app.MountVironController(service, c4)
+	app.MountVironController(service, NewVironController(service))
+	// Mount "post" controller
+	app.MountPostController(service, NewPostController(service))
 
 	// Start service
 	if err := service.ListenAndServe(":8080"); err != nil {

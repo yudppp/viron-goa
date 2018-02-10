@@ -74,8 +74,13 @@ var _ = Resource("post", func() {
 		Description("Get post list")
 		Routing(GET("/posts"))
 		Params(func() {
-			Param("limit", Integer, "limit")
-			Param("offset", Integer, "offset")
+			Param("limit", Integer, "limit", func() {
+				Default(5)
+				Maximum(100)
+			})
+			Param("offset", Integer, "offset", func() {
+				Default(0)
+			})
 			Param("status", String, "filter status", func() {
 				Enum("draft", "published")
 			})

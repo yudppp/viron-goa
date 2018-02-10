@@ -361,7 +361,7 @@ func DeletePostNoContent(t goatest.TInterface, ctx context.Context, service *goa
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListPostInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.PostController, limit *int, offset *int, status *string) http.ResponseWriter {
+func ListPostInternalServerError(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.PostController, limit int, offset int, status *string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -382,12 +382,12 @@ func ListPostInternalServerError(t goatest.TInterface, ctx context.Context, serv
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if limit != nil {
-		sliceVal := []string{strconv.Itoa(*limit)}
+	{
+		sliceVal := []string{strconv.Itoa(limit)}
 		query["limit"] = sliceVal
 	}
-	if offset != nil {
-		sliceVal := []string{strconv.Itoa(*offset)}
+	{
+		sliceVal := []string{strconv.Itoa(offset)}
 		query["offset"] = sliceVal
 	}
 	if status != nil {
@@ -403,12 +403,12 @@ func ListPostInternalServerError(t goatest.TInterface, ctx context.Context, serv
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if limit != nil {
-		sliceVal := []string{strconv.Itoa(*limit)}
+	{
+		sliceVal := []string{strconv.Itoa(limit)}
 		prms["limit"] = sliceVal
 	}
-	if offset != nil {
-		sliceVal := []string{strconv.Itoa(*offset)}
+	{
+		sliceVal := []string{strconv.Itoa(offset)}
 		prms["offset"] = sliceVal
 	}
 	if status != nil {
@@ -448,7 +448,7 @@ func ListPostInternalServerError(t goatest.TInterface, ctx context.Context, serv
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func ListPostOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.PostController, limit *int, offset *int, status *string) (http.ResponseWriter, app.PostCollection) {
+func ListPostOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.PostController, limit int, offset int, status *string) (http.ResponseWriter, app.PostCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -469,12 +469,12 @@ func ListPostOK(t goatest.TInterface, ctx context.Context, service *goa.Service,
 	// Setup request context
 	rw := httptest.NewRecorder()
 	query := url.Values{}
-	if limit != nil {
-		sliceVal := []string{strconv.Itoa(*limit)}
+	{
+		sliceVal := []string{strconv.Itoa(limit)}
 		query["limit"] = sliceVal
 	}
-	if offset != nil {
-		sliceVal := []string{strconv.Itoa(*offset)}
+	{
+		sliceVal := []string{strconv.Itoa(offset)}
 		query["offset"] = sliceVal
 	}
 	if status != nil {
@@ -490,12 +490,12 @@ func ListPostOK(t goatest.TInterface, ctx context.Context, service *goa.Service,
 		panic("invalid test " + err.Error()) // bug
 	}
 	prms := url.Values{}
-	if limit != nil {
-		sliceVal := []string{strconv.Itoa(*limit)}
+	{
+		sliceVal := []string{strconv.Itoa(limit)}
 		prms["limit"] = sliceVal
 	}
-	if offset != nil {
-		sliceVal := []string{strconv.Itoa(*offset)}
+	{
+		sliceVal := []string{strconv.Itoa(offset)}
 		prms["offset"] = sliceVal
 	}
 	if status != nil {

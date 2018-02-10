@@ -101,8 +101,8 @@ type ListPostContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
-	Limit  *int
-	Offset *int
+	Limit  int
+	Offset int
 	Status *string
 }
 
@@ -116,23 +116,26 @@ func NewListPostContext(ctx context.Context, r *http.Request, service *goa.Servi
 	req.Request = r
 	rctx := ListPostContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramLimit := req.Params["limit"]
-	if len(paramLimit) > 0 {
+	if len(paramLimit) == 0 {
+		rctx.Limit = 5
+	} else {
 		rawLimit := paramLimit[0]
 		if limit, err2 := strconv.Atoi(rawLimit); err2 == nil {
-			tmp3 := limit
-			tmp2 := &tmp3
-			rctx.Limit = tmp2
+			rctx.Limit = limit
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("limit", rawLimit, "integer"))
 		}
+		if rctx.Limit > 100 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`limit`, rctx.Limit, 100, false))
+		}
 	}
 	paramOffset := req.Params["offset"]
-	if len(paramOffset) > 0 {
+	if len(paramOffset) == 0 {
+		rctx.Offset = 0
+	} else {
 		rawOffset := paramOffset[0]
 		if offset, err2 := strconv.Atoi(rawOffset); err2 == nil {
-			tmp5 := offset
-			tmp4 := &tmp5
-			rctx.Offset = tmp4
+			rctx.Offset = offset
 		} else {
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("offset", rawOffset, "integer"))
 		}

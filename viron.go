@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/azihsoyn/goptional"
 	"github.com/goadesign/goa"
 	"github.com/yudppp/viron-goa/app"
 )
@@ -59,6 +60,30 @@ func (c *VironController) Get(ctx *app.GetVironContext) error {
 				Name:       "ダッシュボード",
 				ID:         "quickview",
 				Components: []*app.Vironcomponent{},
+			},
+			&app.Vironpage{
+				Section: "manage",
+				Name:    "記事",
+				ID:      "posts",
+				Components: []*app.Vironcomponent{
+					&app.Vironcomponent{
+						API: &app.Vironapi{
+							Path:   "/posts",
+							Method: "get",
+						},
+						Name:       "記事一覧",
+						Pagination: goptional.Bool(true),
+						Style:      "table",
+						Primary:    goptional.String("id"),
+						Query: []*app.Query{
+							&app.Query{
+								Key:  "status",
+								Type: "string",
+							},
+						},
+						TableLabels: []string{"id", "url_name", "title", "status", "published_at"},
+					},
+				},
 			},
 		},
 	}
