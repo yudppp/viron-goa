@@ -1,19 +1,120 @@
 consumes:
 - application/json
 definitions:
+  Post:
+    description: blog post (default view)
+    example:
+      contens: Hi gopher
+      id: 1
+      published_at: 2010-07-17T16:41:39Z
+      status: draft
+      title: hello viron-goa example
+      url_name: hello
+    properties:
+      contens:
+        description: contens
+        example: Hi gopher
+        type: string
+      id:
+        description: id
+        example: 1
+        format: int64
+        type: integer
+      published_at:
+        description: published_at
+        example: 2010-07-17T16:41:39Z
+        format: date-time
+        type: string
+      status:
+        description: status
+        enum:
+        - draft
+        - published
+        example: draft
+        type: string
+      title:
+        description: name
+        example: hello viron-goa example
+        type: string
+      url_name:
+        description: url name
+        example: hello
+        type: string
+    required:
+    - id
+    - url_name
+    - title
+    - contens
+    - status
+    title: 'Mediatype identifier: application/vnd.post+json; view=default'
+    type: object
+  PostCollection:
+    description: PostCollection is the media type for an array of Post (default view)
+    example:
+    - contens: Hi gopher
+      id: 1
+      published_at: 2010-07-17T16:41:39Z
+      status: draft
+      title: hello viron-goa example
+      url_name: hello
+    items:
+      $ref: '#/definitions/Post'
+    title: 'Mediatype identifier: application/vnd.post+json; type=collection; view=default'
+    type: array
+  PostPayload:
+    example:
+      contents: Hi gopher
+      published_at: 1981-05-13T08:32:14Z
+      status: draft
+      title: hello viron-goa example
+      url_name: hello
+    properties:
+      contents:
+        description: contents
+        example: Hi gopher
+        maxLength: 120
+        type: string
+      published_at:
+        description: published_at
+        example: 1981-05-13T08:32:14Z
+        format: date-time
+        type: string
+      status:
+        description: status
+        enum:
+        - draft
+        - published
+        example: draft
+        type: string
+      title:
+        description: title
+        example: hello viron-goa example
+        maxLength: 120
+        type: string
+      url_name:
+        description: url name
+        example: hello
+        type: string
+    required:
+    - url_name
+    - title
+    - contents
+    - status
+    title: PostPayload
+    type: object
   Query:
     description: viron query (default view)
     example:
-      key: Id autem ratione dolor.
-      type: Aut et deserunt voluptates.
+      key: Ratione dolor sapiente aut et deserunt voluptates.
+      type: Est corrupti voluptatem.
     properties:
       key:
         description: key
-        example: Id autem ratione dolor.
+        example: Ratione dolor sapiente aut et deserunt voluptates.
         type: string
       type:
         description: type
-        example: Aut et deserunt voluptates.
+        example: Est corrupti voluptatem.
         type: string
     required:
     - key
@@ -23,7 +124,7 @@ definitions:
   SigninPayload:
     example:
       email: identify key
-      password: zil3mqvnk2
+      password: nk2vyulzua
     properties:
       email:
         description: ID or Email
@@ -31,7 +132,7 @@ definitions:
         type: string
       password:
         description: Password
-        example: zil3mqvnk2
+        example: nk2vyulzua
         maxLength: 256
         type: string
     required:
@@ -42,16 +143,16 @@ definitions:
   Vironapi:
     description: viron api (default view)
     example:
-      method: Est corrupti voluptatem.
-      path: Autem perferendis quia provident.
+      method: Autem perferendis quia provident.
+      path: Veniam esse nemo.
     properties:
       method:
         description: name
-        example: Est corrupti voluptatem.
+        example: Autem perferendis quia provident.
         type: string
       path:
         description: path
-        example: Autem perferendis quia provident.
+        example: Veniam esse nemo.
         type: string
     required:
     - method
@@ -101,6 +202,10 @@ definitions:
       provider: ""
       type: signin
       url: /signin
+    - method: POST
+      provider: ""
+      type: signin
+      url: /signin
     items:
       $ref: '#/definitions/Vironauthtype'
     title: 'Mediatype identifier: application/vnd.vironauthtype+json; type=collection;
@@ -110,58 +215,54 @@ definitions:
     description: viron component (default view)
     example:
       api:
-        method: Est corrupti voluptatem.
-        path: Autem perferendis quia provident.
-      name: Esse nemo omnis qui quis odio.
-      pagination: true
-      primary: Vero a accusamus ad et.
+        method: Autem perferendis quia provident.
+        path: Veniam esse nemo.
+      name: Quis odio vel.
+      pagination: false
+      primary: A accusamus.
       query:
-      - key: Id autem ratione dolor.
-        type: Aut et deserunt voluptates.
-      - key: Id autem ratione dolor.
-        type: Aut et deserunt voluptates.
-      - key: Id autem ratione dolor.
-        type: Aut et deserunt voluptates.
-      style: Nesciunt provident aut deleniti.
+      - key: Ratione dolor sapiente aut et deserunt voluptates.
+        type: Est corrupti voluptatem.
+      - key: Ratione dolor sapiente aut et deserunt voluptates.
+        type: Est corrupti voluptatem.
+      style: Voluptatem aut nesciunt.
       table_labels:
-      - Voluptates qui.
+      - Deleniti ullam est voluptates.
     properties:
       api:
         $ref: '#/definitions/Vironapi'
       name:
         description: name
-        example: Esse nemo omnis qui quis odio.
+        example: Quis odio vel.
         type: string
       pagination:
         description: pagination
-        example: true
+        example: false
         type: boolean
       primary:
         description: primary key
-        example: Vero a accusamus ad et.
+        example: A accusamus.
         type: string
       query:
         description: query
         example:
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
         items:
           $ref: '#/definitions/Query'
         type: array
       style:
         description: style
-        example: Nesciunt provident aut deleniti.
+        example: Voluptatem aut nesciunt.
         type: string
       table_labels:
         description: table label
         example:
-        - Voluptates qui.
+        - Deleniti ullam est voluptates.
         items:
-          example: Voluptates qui.
+          example: Deleniti ullam est voluptates.
           type: string
         type: array
     required:
@@ -175,127 +276,87 @@ definitions:
     example:
       components:
       - api:
-          method: Est corrupti voluptatem.
-          path: Autem perferendis quia provident.
-        name: Esse nemo omnis qui quis odio.
-        pagination: true
-        primary: Vero a accusamus ad et.
+          method: Autem perferendis quia provident.
+          path: Veniam esse nemo.
+        name: Quis odio vel.
+        pagination: false
+        primary: A accusamus.
         query:
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        style: Nesciunt provident aut deleniti.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
+        style: Voluptatem aut nesciunt.
         table_labels:
-        - Voluptates qui.
+        - Deleniti ullam est voluptates.
       - api:
-          method: Est corrupti voluptatem.
-          path: Autem perferendis quia provident.
-        name: Esse nemo omnis qui quis odio.
-        pagination: true
-        primary: Vero a accusamus ad et.
+          method: Autem perferendis quia provident.
+          path: Veniam esse nemo.
+        name: Quis odio vel.
+        pagination: false
+        primary: A accusamus.
         query:
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        style: Nesciunt provident aut deleniti.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
+        - key: Ratione dolor sapiente aut et deserunt voluptates.
+          type: Est corrupti voluptatem.
+        style: Voluptatem aut nesciunt.
         table_labels:
-        - Voluptates qui.
-      - api:
-          method: Est corrupti voluptatem.
-          path: Autem perferendis quia provident.
-        name: Esse nemo omnis qui quis odio.
-        pagination: true
-        primary: Vero a accusamus ad et.
-        query:
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        - key: Id autem ratione dolor.
-          type: Aut et deserunt voluptates.
-        style: Nesciunt provident aut deleniti.
-        table_labels:
-        - Voluptates qui.
-      group: At molestias necessitatibus quasi.
-      id: Iusto rerum similique provident.
-      name: Vitae dolorem.
-      section: Rerum sint molestiae.
+        - Deleniti ullam est voluptates.
+      group: Ut at molestias necessitatibus quasi sapiente.
+      id: Rerum similique provident qui vitae.
+      name: Ut rerum sint.
+      section: Et ut quibusdam delectus.
     properties:
       components:
         description: pages
         example:
         - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
+            method: Autem perferendis quia provident.
+            path: Veniam esse nemo.
+          name: Quis odio vel.
+          pagination: false
+          primary: A accusamus.
           query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          style: Voluptatem aut nesciunt.
           table_labels:
-          - Voluptates qui.
+          - Deleniti ullam est voluptates.
         - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
+            method: Autem perferendis quia provident.
+            path: Veniam esse nemo.
+          name: Quis odio vel.
+          pagination: false
+          primary: A accusamus.
           query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          style: Voluptatem aut nesciunt.
           table_labels:
-          - Voluptates qui.
-        - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
-          query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
-          table_labels:
-          - Voluptates qui.
+          - Deleniti ullam est voluptates.
         items:
           $ref: '#/definitions/Vironcomponent'
         type: array
       group:
         description: group
-        example: At molestias necessitatibus quasi.
+        example: Ut at molestias necessitatibus quasi sapiente.
         type: string
       id:
         description: id
-        example: Iusto rerum similique provident.
+        example: Rerum similique provident qui vitae.
         type: string
       name:
         description: name
-        example: Vitae dolorem.
+        example: Ut rerum sint.
         type: string
       section:
         description: section
-        example: Rerum sint molestiae.
+        example: Et ut quibusdam delectus.
         type: string
     required:
     - id
@@ -308,151 +369,113 @@ definitions:
   Vironsetting:
     description: viron setting (default view)
     example:
-      color: Ut quibusdam delectus.
-      name: Expedita hic eum magni placeat pariatur.
+      color: Expedita hic eum magni placeat pariatur.
+      name: Optio omnis quo omnis ut.
       pages:
       - components:
         - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
+            method: Autem perferendis quia provident.
+            path: Veniam esse nemo.
+          name: Quis odio vel.
+          pagination: false
+          primary: A accusamus.
           query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          style: Voluptatem aut nesciunt.
           table_labels:
-          - Voluptates qui.
+          - Deleniti ullam est voluptates.
         - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
+            method: Autem perferendis quia provident.
+            path: Veniam esse nemo.
+          name: Quis odio vel.
+          pagination: false
+          primary: A accusamus.
           query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          - key: Ratione dolor sapiente aut et deserunt voluptates.
+            type: Est corrupti voluptatem.
+          style: Voluptatem aut nesciunt.
           table_labels:
-          - Voluptates qui.
-        - api:
-            method: Est corrupti voluptatem.
-            path: Autem perferendis quia provident.
-          name: Esse nemo omnis qui quis odio.
-          pagination: true
-          primary: Vero a accusamus ad et.
-          query:
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          - key: Id autem ratione dolor.
-            type: Aut et deserunt voluptates.
-          style: Nesciunt provident aut deleniti.
-          table_labels:
-          - Voluptates qui.
-        group: At molestias necessitatibus quasi.
-        id: Iusto rerum similique provident.
-        name: Vitae dolorem.
-        section: Rerum sint molestiae.
+          - Deleniti ullam est voluptates.
+        group: Ut at molestias necessitatibus quasi sapiente.
+        id: Rerum similique provident qui vitae.
+        name: Ut rerum sint.
+        section: Et ut quibusdam delectus.
       tags:
-      - Quo omnis ut quia consequuntur qui.
-      - Quo omnis ut quia consequuntur qui.
-      theme: A consequatur distinctio possimus in dolor repellendus.
-      thumbnail: Quos quia.
+      - Repellat a consequatur distinctio possimus in.
+      - Repellat a consequatur distinctio possimus in.
+      - Repellat a consequatur distinctio possimus in.
+      theme: Repellendus cum quos quia.
+      thumbnail: Esse repudiandae modi pariatur in.
     properties:
       color:
         description: color
-        example: Ut quibusdam delectus.
+        example: Expedita hic eum magni placeat pariatur.
         type: string
       name:
         description: name
-        example: Expedita hic eum magni placeat pariatur.
+        example: Optio omnis quo omnis ut.
         type: string
       pages:
         description: pages
         example:
         - components:
           - api:
-              method: Est corrupti voluptatem.
-              path: Autem perferendis quia provident.
-            name: Esse nemo omnis qui quis odio.
-            pagination: true
-            primary: Vero a accusamus ad et.
+              method: Autem perferendis quia provident.
+              path: Veniam esse nemo.
+            name: Quis odio vel.
+            pagination: false
+            primary: A accusamus.
             query:
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            style: Nesciunt provident aut deleniti.
+            - key: Ratione dolor sapiente aut et deserunt voluptates.
+              type: Est corrupti voluptatem.
+            - key: Ratione dolor sapiente aut et deserunt voluptates.
+              type: Est corrupti voluptatem.
+            style: Voluptatem aut nesciunt.
             table_labels:
-            - Voluptates qui.
+            - Deleniti ullam est voluptates.
           - api:
-              method: Est corrupti voluptatem.
-              path: Autem perferendis quia provident.
-            name: Esse nemo omnis qui quis odio.
-            pagination: true
-            primary: Vero a accusamus ad et.
+              method: Autem perferendis quia provident.
+              path: Veniam esse nemo.
+            name: Quis odio vel.
+            pagination: false
+            primary: A accusamus.
             query:
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            style: Nesciunt provident aut deleniti.
+            - key: Ratione dolor sapiente aut et deserunt voluptates.
+              type: Est corrupti voluptatem.
+            - key: Ratione dolor sapiente aut et deserunt voluptates.
+              type: Est corrupti voluptatem.
+            style: Voluptatem aut nesciunt.
             table_labels:
-            - Voluptates qui.
-          - api:
-              method: Est corrupti voluptatem.
-              path: Autem perferendis quia provident.
-            name: Esse nemo omnis qui quis odio.
-            pagination: true
-            primary: Vero a accusamus ad et.
-            query:
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            - key: Id autem ratione dolor.
-              type: Aut et deserunt voluptates.
-            style: Nesciunt provident aut deleniti.
-            table_labels:
-            - Voluptates qui.
-          group: At molestias necessitatibus quasi.
-          id: Iusto rerum similique provident.
-          name: Vitae dolorem.
-          section: Rerum sint molestiae.
+            - Deleniti ullam est voluptates.
+          group: Ut at molestias necessitatibus quasi sapiente.
+          id: Rerum similique provident qui vitae.
+          name: Ut rerum sint.
+          section: Et ut quibusdam delectus.
         items:
           $ref: '#/definitions/Vironpage'
         type: array
       tags:
         description: tags
         example:
-        - Quo omnis ut quia consequuntur qui.
-        - Quo omnis ut quia consequuntur qui.
+        - Repellat a consequatur distinctio possimus in.
+        - Repellat a consequatur distinctio possimus in.
+        - Repellat a consequatur distinctio possimus in.
         items:
-          example: Quo omnis ut quia consequuntur qui.
+          example: Repellat a consequatur distinctio possimus in.
           type: string
         type: array
       theme:
         description: theme
-        example: A consequatur distinctio possimus in dolor repellendus.
+        example: Repellendus cum quos quia.
         type: string
       thumbnail:
         description: thumbnail
-        example: Quos quia.
+        example: Esse repudiandae modi pariatur in.
         type: string
     required:
     - name
@@ -527,6 +550,110 @@ paths:
           schema:
             $ref: '#/definitions/error'
       summary: Download viron-client/v1
+  /posts:
+    get:
+      description: Get post list
+      operationId: post#list
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        required: false
+        type: integer
+      - description: offset
+        in: query
+        name: offset
+        required: false
+        type: integer
+      - description: filter status
+        enum:
+        - draft
+        - published
+        in: query
+        name: status
+        required: false
+        type: string
+      produces:
+      - application/vnd.post+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/PostCollection'
+        "500":
+          description: Internal Server Error
+      security:
+      - jwt: []
+      summary: list post
+      tags:
+      - post
+    put:
+      description: Create post
+      operationId: post#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/PostPayload'
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+      security:
+      - jwt: []
+      summary: create post
+      tags:
+      - post
+  /posts/{id}:
+    delete:
+      description: Delte post
+      operationId: post#delete
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - jwt: []
+      summary: delete post
+      tags:
+      - post
+    put:
+      description: Update post
+      operationId: post#update
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/PostPayload'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - jwt: []
+      summary: update post
+      tags:
+      - post
   /signin:
     post:
       description: Creates a valid JWT
@@ -598,8 +725,12 @@ paths:
 produces:
 - application/json
 responses:
+  BadRequest:
+    description: Bad Request
   InternalServerError:
     description: Internal Server Error
+  NoContent:
+    description: No Content
   Unauthorized:
     description: Unauthorized
 securityDefinitions:

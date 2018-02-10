@@ -14,7 +14,206 @@ import (
 	"context"
 	"github.com/goadesign/goa"
 	"net/http"
+	"strconv"
 )
+
+// CreatePostContext provides the post create action context.
+type CreatePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *PostPayload
+}
+
+// NewCreatePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller create action.
+func NewCreatePostContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreatePostContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreatePostContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *CreatePostContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *CreatePostContext) InternalServerError() error {
+	ctx.ResponseData.WriteHeader(500)
+	return nil
+}
+
+// DeletePostContext provides the post delete action context.
+type DeletePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ID int
+}
+
+// NewDeletePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller delete action.
+func NewDeletePostContext(ctx context.Context, r *http.Request, service *goa.Service) (*DeletePostContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := DeletePostContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramID := req.Params["id"]
+	if len(paramID) > 0 {
+		rawID := paramID[0]
+		if id, err2 := strconv.Atoi(rawID); err2 == nil {
+			rctx.ID = id
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("id", rawID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *DeletePostContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *DeletePostContext) BadRequest() error {
+	ctx.ResponseData.WriteHeader(400)
+	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *DeletePostContext) InternalServerError() error {
+	ctx.ResponseData.WriteHeader(500)
+	return nil
+}
+
+// ListPostContext provides the post list action context.
+type ListPostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Limit  *int
+	Offset *int
+	Status *string
+}
+
+// NewListPostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller list action.
+func NewListPostContext(ctx context.Context, r *http.Request, service *goa.Service) (*ListPostContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := ListPostContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramLimit := req.Params["limit"]
+	if len(paramLimit) > 0 {
+		rawLimit := paramLimit[0]
+		if limit, err2 := strconv.Atoi(rawLimit); err2 == nil {
+			tmp3 := limit
+			tmp2 := &tmp3
+			rctx.Limit = tmp2
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("limit", rawLimit, "integer"))
+		}
+	}
+	paramOffset := req.Params["offset"]
+	if len(paramOffset) > 0 {
+		rawOffset := paramOffset[0]
+		if offset, err2 := strconv.Atoi(rawOffset); err2 == nil {
+			tmp5 := offset
+			tmp4 := &tmp5
+			rctx.Offset = tmp4
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("offset", rawOffset, "integer"))
+		}
+	}
+	paramStatus := req.Params["status"]
+	if len(paramStatus) > 0 {
+		rawStatus := paramStatus[0]
+		rctx.Status = &rawStatus
+		if rctx.Status != nil {
+			if !(*rctx.Status == "draft" || *rctx.Status == "published") {
+				err = goa.MergeErrors(err, goa.InvalidEnumValueError(`status`, *rctx.Status, []interface{}{"draft", "published"}))
+			}
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *ListPostContext) OK(r PostCollection) error {
+	if ctx.ResponseData.Header().Get("Content-Type") == "" {
+		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.post+json; type=collection")
+	}
+	if r == nil {
+		r = PostCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *ListPostContext) InternalServerError() error {
+	ctx.ResponseData.WriteHeader(500)
+	return nil
+}
+
+// UpdatePostContext provides the post update action context.
+type UpdatePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ID      int
+	Payload *PostPayload
+}
+
+// NewUpdatePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller update action.
+func NewUpdatePostContext(ctx context.Context, r *http.Request, service *goa.Service) (*UpdatePostContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := UpdatePostContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramID := req.Params["id"]
+	if len(paramID) > 0 {
+		rawID := paramID[0]
+		if id, err2 := strconv.Atoi(rawID); err2 == nil {
+			rctx.ID = id
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("id", rawID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *UpdatePostContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *UpdatePostContext) BadRequest() error {
+	ctx.ResponseData.WriteHeader(400)
+	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *UpdatePostContext) InternalServerError() error {
+	ctx.ResponseData.WriteHeader(500)
+	return nil
+}
 
 // AuthtypeVironContext provides the viron authtype action context.
 type AuthtypeVironContext struct {

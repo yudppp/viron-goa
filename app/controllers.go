@@ -48,6 +48,127 @@ func MountClientController(service *goa.Service, ctrl ClientController) {
 	service.LogInfo("mount", "ctrl", "Client", "files", "viron-client/v1/index.html", "route", "GET /")
 }
 
+// PostController is the controller interface for the Post actions.
+type PostController interface {
+	goa.Muxer
+	Create(*CreatePostContext) error
+	Delete(*DeletePostContext) error
+	List(*ListPostContext) error
+	Update(*UpdatePostContext) error
+}
+
+// MountPostController "mounts" a Post resource controller on the given service.
+func MountPostController(service *goa.Service, ctrl PostController) {
+	initService(service)
+	var h goa.Handler
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewCreatePostContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*PostPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Create(rctx)
+	}
+	h = handleSecurity("jwt", h)
+	service.Mux.Handle("PUT", "/posts", ctrl.MuxHandler("create", h, unmarshalCreatePostPayload))
+	service.LogInfo("mount", "ctrl", "Post", "action", "Create", "route", "PUT /posts", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewDeletePostContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Delete(rctx)
+	}
+	h = handleSecurity("jwt", h)
+	service.Mux.Handle("DELETE", "/posts/:id", ctrl.MuxHandler("delete", h, nil))
+	service.LogInfo("mount", "ctrl", "Post", "action", "Delete", "route", "DELETE /posts/:id", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewListPostContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.List(rctx)
+	}
+	h = handleSecurity("jwt", h)
+	service.Mux.Handle("GET", "/posts", ctrl.MuxHandler("list", h, nil))
+	service.LogInfo("mount", "ctrl", "Post", "action", "List", "route", "GET /posts", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewUpdatePostContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*PostPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Update(rctx)
+	}
+	h = handleSecurity("jwt", h)
+	service.Mux.Handle("PUT", "/posts/:id", ctrl.MuxHandler("update", h, unmarshalUpdatePostPayload))
+	service.LogInfo("mount", "ctrl", "Post", "action", "Update", "route", "PUT /posts/:id", "security", "jwt")
+}
+
+// unmarshalCreatePostPayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreatePostPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &postPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// unmarshalUpdatePostPayload unmarshals the request body into the context request data Payload field.
+func unmarshalUpdatePostPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &postPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
 // SwaggerController is the controller interface for the Swagger actions.
 type SwaggerController interface {
 	goa.Muxer

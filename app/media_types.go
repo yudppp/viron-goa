@@ -12,7 +12,64 @@ package app
 
 import (
 	"github.com/goadesign/goa"
+	"time"
 )
+
+// blog post (default view)
+//
+// Identifier: application/vnd.post+json; view=default
+type Post struct {
+	// contens
+	Contens string `form:"contens" json:"contens" xml:"contens"`
+	// id
+	ID int `form:"id" json:"id" xml:"id"`
+	// published_at
+	PublishedAt *time.Time `form:"published_at,omitempty" json:"published_at,omitempty" xml:"published_at,omitempty"`
+	// status
+	Status string `form:"status" json:"status" xml:"status"`
+	// name
+	Title string `form:"title" json:"title" xml:"title"`
+	// url name
+	URLName string `form:"url_name" json:"url_name" xml:"url_name"`
+}
+
+// Validate validates the Post media type instance.
+func (mt *Post) Validate() (err error) {
+
+	if mt.URLName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "url_name"))
+	}
+	if mt.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
+	}
+	if mt.Contens == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "contens"))
+	}
+	if mt.Status == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))
+	}
+	if !(mt.Status == "draft" || mt.Status == "published") {
+		err = goa.MergeErrors(err, goa.InvalidEnumValueError(`response.status`, mt.Status, []interface{}{"draft", "published"}))
+	}
+	return
+}
+
+// PostCollection is the media type for an array of Post (default view)
+//
+// Identifier: application/vnd.post+json; type=collection; view=default
+type PostCollection []*Post
+
+// Validate validates the PostCollection media type instance.
+func (mt PostCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
 
 // viron query (default view)
 //
