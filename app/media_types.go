@@ -19,8 +19,8 @@ import (
 //
 // Identifier: application/vnd.post+json; view=default
 type Post struct {
-	// contens
-	Contens string `form:"contens" json:"contens" xml:"contens"`
+	// contents
+	Contents string `form:"contents" json:"contents" xml:"contents"`
 	// id
 	ID int `form:"id" json:"id" xml:"id"`
 	// published_at
@@ -42,8 +42,8 @@ func (mt *Post) Validate() (err error) {
 	if mt.Title == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
 	}
-	if mt.Contens == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "contens"))
+	if mt.Contents == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "contents"))
 	}
 	if mt.Status == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "status"))

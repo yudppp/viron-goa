@@ -26,7 +26,7 @@ func (c *PostController) Create(ctx *app.CreatePostContext) error {
 	err := stores.CreatePost(app.Post{
 		URLName:     ctx.Payload.URLName,
 		Title:       ctx.Payload.Title,
-		Contens:     ctx.Payload.Contents,
+		Contents:    ctx.Payload.Contents,
 		Status:      ctx.Payload.Status,
 		PublishedAt: ctx.Payload.PublishedAt,
 	})
@@ -92,7 +92,7 @@ func (c *PostController) Update(ctx *app.UpdatePostContext) error {
 		ID:          ctx.ID,
 		URLName:     ctx.Payload.URLName,
 		Title:       ctx.Payload.Title,
-		Contens:     ctx.Payload.Contents,
+		Contents:    ctx.Payload.Contents,
 		Status:      ctx.Payload.Status,
 		PublishedAt: ctx.Payload.PublishedAt,
 	})

@@ -19,11 +19,11 @@ func init() {
 		id := identifyCursor + 1
 		identifyCursor++
 		post := app.Post{
-			ID:      id,
-			URLName: fmt.Sprintf("post_%v", id),
-			Title:   fmt.Sprintf("Title %v", id),
-			Contens: "hello world",
-			Status:  "draft",
+			ID:       id,
+			URLName:  fmt.Sprintf("post_%v", id),
+			Title:    fmt.Sprintf("Title %v", id),
+			Contents: "hello world",
+			Status:   "draft",
 		}
 		postStore[id] = post
 	}

@@ -279,7 +279,7 @@ var Post = MediaType("application/vnd.post+json", func() {
 		Attribute("title", String, "name", func() {
 			Example("hello viron-goa example")
 		})
-		Attribute("contens", String, "contens", func() {
+		Attribute("contents", String, "contents", func() {
 			Example("Hi gopher")
 		})
 		Attribute("status", String, "status", func() {
@@ -287,13 +287,13 @@ var Post = MediaType("application/vnd.post+json", func() {
 			Example("draft")
 		})
 		Attribute("published_at", DateTime, "published_at")
-		Required("id", "url_name", "title", "contens", "status")
+		Required("id", "url_name", "title", "contents", "status")
 	})
 	View("default", func() {
 		Attribute("id")
 		Attribute("url_name")
 		Attribute("title")
-		Attribute("contens")
+		Attribute("contents")
 		Attribute("status")
 		Attribute("published_at")
 	})

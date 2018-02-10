@@ -4,15 +4,15 @@ definitions:
   Post:
     description: blog post (default view)
     example:
-      contens: Hi gopher
+      contents: Hi gopher
       id: 1
       published_at: 2010-07-17T16:41:39Z
       status: draft
       title: hello viron-goa example
       url_name: hello
     properties:
-      contens:
-        description: contens
+      contents:
+        description: contents
         example: Hi gopher
         type: string
       id:
@@ -44,14 +44,14 @@ definitions:
     - id
     - url_name
     - title
-    - contens
+    - contents
     - status
     title: 'Mediatype identifier: application/vnd.post+json; view=default'
     type: object
   PostCollection:
     description: PostCollection is the media type for an array of Post (default view)
     example:
-    - contens: Hi gopher
+    - contents: Hi gopher
       id: 1
       published_at: 2010-07-17T16:41:39Z
       status: draft
