@@ -36,3 +36,12 @@ func (c *VironController) Get(ctx *app.GetVironContext) error {
 	return ctx.OK(res)
 	// VironController_Get: end_implement
 }
+
+func (c *VironController) Signin(ctx *app.SigninVironContext) error {
+	// VironController_Signin: start_implement
+
+	// Put your logic here
+
+	return ctx.NoContent()
+	// VironController_Signin: end_implement
+}

@@ -21,9 +21,6 @@ func main() {
 	// Mount "client" controller
 	c := NewClientController(service)
 	app.MountClientController(service, c)
-	// Mount "jwt" controller
-	c2 := NewJWTController(service)
-	app.MountJWTController(service, c2)
 	// Mount "swagger" controller
 	c3 := NewSwaggerController(service)
 	app.MountSwaggerController(service, c3)

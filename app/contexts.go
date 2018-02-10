@@ -16,44 +16,6 @@ import (
 	"net/http"
 )
 
-// SigninJWTContext provides the jwt signin action context.
-type SigninJWTContext struct {
-	context.Context
-	*goa.ResponseData
-	*goa.RequestData
-	Payload *SigninPayload
-}
-
-// NewSigninJWTContext parses the incoming request URL and body, performs validations and creates the
-// context used by the jwt controller signin action.
-func NewSigninJWTContext(ctx context.Context, r *http.Request, service *goa.Service) (*SigninJWTContext, error) {
-	var err error
-	resp := goa.ContextResponse(ctx)
-	resp.Service = service
-	req := goa.ContextRequest(ctx)
-	req.Request = r
-	rctx := SigninJWTContext{Context: ctx, ResponseData: resp, RequestData: req}
-	return &rctx, err
-}
-
-// NoContent sends a HTTP response with status code 204.
-func (ctx *SigninJWTContext) NoContent() error {
-	ctx.ResponseData.WriteHeader(204)
-	return nil
-}
-
-// Unauthorized sends a HTTP response with status code 401.
-func (ctx *SigninJWTContext) Unauthorized() error {
-	ctx.ResponseData.WriteHeader(401)
-	return nil
-}
-
-// InternalServerError sends a HTTP response with status code 500.
-func (ctx *SigninJWTContext) InternalServerError() error {
-	ctx.ResponseData.WriteHeader(500)
-	return nil
-}
-
 // AuthtypeVironContext provides the viron authtype action context.
 type AuthtypeVironContext struct {
 	context.Context
@@ -109,4 +71,42 @@ func (ctx *GetVironContext) OK(r *Vironsetting) error {
 		ctx.ResponseData.Header().Set("Content-Type", "application/vnd.vironsetting+json")
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// SigninVironContext provides the viron signin action context.
+type SigninVironContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *SigninPayload
+}
+
+// NewSigninVironContext parses the incoming request URL and body, performs validations and creates the
+// context used by the viron controller signin action.
+func NewSigninVironContext(ctx context.Context, r *http.Request, service *goa.Service) (*SigninVironContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := SigninVironContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *SigninVironContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// Unauthorized sends a HTTP response with status code 401.
+func (ctx *SigninVironContext) Unauthorized() error {
+	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
+// InternalServerError sends a HTTP response with status code 500.
+func (ctx *SigninVironContext) InternalServerError() error {
+	ctx.ResponseData.WriteHeader(500)
+	return nil
 }

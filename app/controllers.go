@@ -48,54 +48,6 @@ func MountClientController(service *goa.Service, ctrl ClientController) {
 	service.LogInfo("mount", "ctrl", "Client", "files", "viron-client/v1/index.html", "route", "GET /")
 }
 
-// JWTController is the controller interface for the JWT actions.
-type JWTController interface {
-	goa.Muxer
-	Signin(*SigninJWTContext) error
-}
-
-// MountJWTController "mounts" a JWT resource controller on the given service.
-func MountJWTController(service *goa.Service, ctrl JWTController) {
-	initService(service)
-	var h goa.Handler
-
-	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
-		// Check if there was an error loading the request
-		if err := goa.ContextError(ctx); err != nil {
-			return err
-		}
-		// Build the context
-		rctx, err := NewSigninJWTContext(ctx, req, service)
-		if err != nil {
-			return err
-		}
-		// Build the payload
-		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*SigninPayload)
-		} else {
-			return goa.MissingPayloadError()
-		}
-		return ctrl.Signin(rctx)
-	}
-	service.Mux.Handle("POST", "/signin", ctrl.MuxHandler("signin", h, unmarshalSigninJWTPayload))
-	service.LogInfo("mount", "ctrl", "JWT", "action", "Signin", "route", "POST /signin")
-}
-
-// unmarshalSigninJWTPayload unmarshals the request body into the context request data Payload field.
-func unmarshalSigninJWTPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &signinPayload{}
-	if err := service.DecodeRequest(req, payload); err != nil {
-		return err
-	}
-	if err := payload.Validate(); err != nil {
-		// Initialize payload with private data structure so it can be logged
-		goa.ContextRequest(ctx).Payload = payload
-		return err
-	}
-	goa.ContextRequest(ctx).Payload = payload.Publicize()
-	return nil
-}
-
 // SwaggerController is the controller interface for the Swagger actions.
 type SwaggerController interface {
 	goa.Muxer
@@ -144,6 +96,7 @@ type VironController interface {
 	goa.Muxer
 	Authtype(*AuthtypeVironContext) error
 	Get(*GetVironContext) error
+	Signin(*SigninVironContext) error
 }
 
 // MountVironController "mounts" a Viron resource controller on the given service.
@@ -181,4 +134,40 @@ func MountVironController(service *goa.Service, ctrl VironController) {
 	h = handleSecurity("jwt", h)
 	service.Mux.Handle("GET", "/viron", ctrl.MuxHandler("get", h, nil))
 	service.LogInfo("mount", "ctrl", "Viron", "action", "Get", "route", "GET /viron", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewSigninVironContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*SigninPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Signin(rctx)
+	}
+	service.Mux.Handle("POST", "/signin", ctrl.MuxHandler("signin", h, unmarshalSigninVironPayload))
+	service.LogInfo("mount", "ctrl", "Viron", "action", "Signin", "route", "POST /signin")
+}
+
+// unmarshalSigninVironPayload unmarshals the request body into the context request data Payload field.
+func unmarshalSigninVironPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &signinPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
 }

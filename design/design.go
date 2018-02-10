@@ -29,22 +29,6 @@ var _ = Resource("swagger", func() {
 	})
 })
 
-var _ = Resource("jwt", func() {
-	Action("signin", func() {
-		Description("Creates a valid JWT")
-		NoSecurity()
-		Payload(SigninPayload)
-		Routing(POST("/signin"))
-		Response(NoContent, func() {
-			Headers(func() {
-				Header("Authorization", String, "Generated JWT")
-			})
-		})
-		Response(Unauthorized)
-		Response(InternalServerError)
-	})
-})
-
 var _ = Resource("client", func() {
 	Files("/*filepath", "viron-client/v1", func() {
 		NoSecurity()
@@ -69,6 +53,19 @@ var _ = Resource("viron", func() {
 		Response(OK, func() {
 			Media(VironSetting)
 		})
+	})
+	Action("signin", func() {
+		Description("Creates a valid JWT")
+		NoSecurity()
+		Payload(SigninPayload)
+		Routing(POST("/signin"))
+		Response(NoContent, func() {
+			Headers(func() {
+				Header("Authorization", String, "Generated JWT")
+			})
+		})
+		Response(Unauthorized)
+		Response(InternalServerError)
 	})
 })
 

@@ -530,7 +530,7 @@ paths:
   /signin:
     post:
       description: Creates a valid JWT
-      operationId: jwt#signin
+      operationId: viron#signin
       parameters:
       - in: body
         name: payload
@@ -548,9 +548,9 @@ paths:
           description: Unauthorized
         "500":
           description: Internal Server Error
-      summary: signin jwt
+      summary: signin viron
       tags:
-      - jwt
+      - viron
   /swagger.json:
     get:
       externalDocs:
