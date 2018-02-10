@@ -17,6 +17,7 @@ func main() {
 	service.Use(middleware.LogRequest(true))
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
+	app.UseJWTMiddleware(service, NewJWTMiddleware())
 
 	// Mount "client" controller
 	c := NewClientController(service)
