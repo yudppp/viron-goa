@@ -1,4 +1,4 @@
-package main
+package controllers
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"github.com/azihsoyn/goptional"
 	"github.com/goadesign/goa"
 	"github.com/yudppp/viron-goa/app"
+	"github.com/yudppp/viron-goa/jwt"
 )
 
 // VironController implements the viron resource.
@@ -95,7 +96,7 @@ func (c *VironController) Signin(ctx *app.SigninVironContext) error {
 	// VironController_Signin: start_implement
 
 	// Put your logic here
-	ok, err := checkAuth(ctx.Payload.Email, ctx.Payload.Password)
+	ok, err := jwt.CheckAuth(ctx.Payload.Email, ctx.Payload.Password)
 	if err != nil {
 		fmt.Println(err)
 		return ctx.InternalServerError()
@@ -104,7 +105,7 @@ func (c *VironController) Signin(ctx *app.SigninVironContext) error {
 		return ctx.Unauthorized()
 	}
 
-	token := CreateJWT(map[string]interface{}{"email": ctx.Payload.Email})
+	token := jwt.CreateJWT(map[string]interface{}{"email": ctx.Payload.Email})
 	ctx.ResponseData.Header().Set("Authorization", "Bearer "+token)
 
 	return ctx.NoContent()

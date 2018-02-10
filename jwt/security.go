@@ -1,4 +1,4 @@
-package main
+package jwt
 
 import (
 	"context"
@@ -37,7 +37,7 @@ func NewJWTMiddleware() goa.Middleware {
 	return jwt.New(JWT_SECRET, validationHandler, app.NewJWTSecurity())
 }
 
-func checkAuth(email, password string) (bool, error) {
+func CheckAuth(email, password string) (bool, error) {
 	// TODO: implement
 	// all ok now!!
 	return true, nil

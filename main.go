@@ -6,6 +6,8 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
 	"github.com/yudppp/viron-goa/app"
+	"github.com/yudppp/viron-goa/controllers"
+	"github.com/yudppp/viron-goa/jwt"
 )
 
 func main() {
@@ -17,16 +19,16 @@ func main() {
 	service.Use(middleware.LogRequest(true))
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
-	app.UseJWTMiddleware(service, NewJWTMiddleware())
+	app.UseJWTMiddleware(service, jwt.NewJWTMiddleware())
 
 	// Mount "client" controller
-	app.MountClientController(service, NewClientController(service))
+	app.MountClientController(service, controllers.NewClientController(service))
 	// Mount "swagger" controller
-	app.MountSwaggerController(service, NewSwaggerController(service))
+	app.MountSwaggerController(service, controllers.NewSwaggerController(service))
 	// Mount "viron" controller
-	app.MountVironController(service, NewVironController(service))
+	app.MountVironController(service, controllers.NewVironController(service))
 	// Mount "post" controller
-	app.MountPostController(service, NewPostController(service))
+	app.MountPostController(service, controllers.NewPostController(service))
 
 	// Start service
 	if err := service.ListenAndServe(":8080"); err != nil {
