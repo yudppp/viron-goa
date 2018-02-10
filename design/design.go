@@ -69,6 +69,52 @@ var _ = Resource("viron", func() {
 	})
 })
 
+var _ = Resource("post", func() {
+	Action("list", func() {
+		Description("Get post list")
+		Routing(GET("/posts"))
+		Params(func() {
+			Param("limit", Integer, "limit")
+			Param("offset", Integer, "offset")
+			Param("status", String, "filter status", func() {
+				Enum("draft", "published")
+			})
+		})
+		Response(OK, func() {
+			Media(CollectionOf(Post))
+		})
+		Response(InternalServerError)
+	})
+	Action("create", func() {
+		Description("Create post")
+		Routing(PUT("/posts"))
+		Payload(PostPayload)
+		Response(NoContent)
+		Response(InternalServerError)
+	})
+	Action("update", func() {
+		Description("Update post")
+		Routing(PUT("/posts/:id"))
+		Params(func() {
+			Param("id", Integer, "id")
+		})
+		Payload(PostPayload)
+		Response(NoContent)
+		Response(BadRequest)
+		Response(InternalServerError)
+	})
+	Action("delete", func() {
+		Description("Delte post")
+		Routing(DELETE("/posts/:id"))
+		Params(func() {
+			Param("id", Integer, "id")
+		})
+		Response(NoContent)
+		Response(BadRequest)
+		Response(InternalServerError)
+	})
+})
+
 var SigninPayload = Type("SigninPayload", func() {
 	Member("email", String, "ID or Email", func() {
 		Example("identify key")
@@ -77,6 +123,27 @@ var SigninPayload = Type("SigninPayload", func() {
 		MaxLength(256)
 	})
 	Required("email", "password")
+})
+
+var PostPayload = Type("PostPayload", func() {
+	Member("url_name", String, "url name", func() {
+		Example("hello")
+	})
+	Member("title", String, "title", func() {
+		Example("hello viron-goa example")
+		MaxLength(120)
+	})
+	Member("contents", String, "contents", func() {
+		Example("Hi gopher")
+		MaxLength(120)
+	})
+	Member("status", String, "status", func() {
+		Example("draft")
+		Enum("draft", "published")
+	})
+	Member("published_at", DateTime, "published_at", func() {
+	})
+	Required("url_name", "title", "contents", "status")
 })
 
 // VironAuthType
@@ -191,5 +258,38 @@ var VironAPI = MediaType("application/vnd.vironapi+json", func() {
 	View("default", func() {
 		Attribute("method")
 		Attribute("path")
+	})
+})
+
+// Post
+var Post = MediaType("application/vnd.post+json", func() {
+	Description("blog post")
+	Attributes(func() {
+		Attribute("id", Integer, "id", func() {
+			Example(1)
+		})
+		Attribute("url_name", String, "url name", func() {
+			Example("hello")
+		})
+		Attribute("title", String, "name", func() {
+			Example("hello viron-goa example")
+		})
+		Attribute("contens", String, "contens", func() {
+			Example("Hi gopher")
+		})
+		Attribute("status", String, "status", func() {
+			Enum("draft", "published")
+			Example("draft")
+		})
+		Attribute("published_at", DateTime, "published_at")
+		Required("id", "url_name", "title", "contens", "status")
+	})
+	View("default", func() {
+		Attribute("id")
+		Attribute("url_name")
+		Attribute("title")
+		Attribute("contens")
+		Attribute("status")
+		Attribute("published_at")
 	})
 })
