@@ -1,7 +1,7 @@
 run:
 	go run *.go
 gen:
-	goagen main -d github.com/yudppp/viron-goa/design
+	# goagen main -d github.com/yudppp/viron-goa/design
 	goagen app -d github.com/yudppp/viron-goa/design
 	goagen swagger -d github.com/yudppp/viron-goa/design
 install:
